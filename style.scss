@@ -1,0 +1,25 @@
+body{
+    font-family: 'Acme', sans-serif;
+}
+.title{
+    text-align: center;
+    color: lightgray;
+}
+tr{
+    cursor: pointer;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    // justify-content: center;
+    // align-items: center;
+    input{
+        margin-bottom: 10px;
+    }
+    .save{
+        display: none;
+    }
+}
