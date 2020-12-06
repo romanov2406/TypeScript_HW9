@@ -1,3 +1,11 @@
+const login: HTMLInputElement = document.querySelector('#login');
+const password: HTMLInputElement = document.querySelector('#password');
+const email: HTMLInputElement = document.querySelector('#email');
+const add: HTMLButtonElement = document.querySelector('#add');
+const save: HTMLButtonElement = document.querySelector('#save');
+const tbody: HTMLTableElement = document.querySelector('#bodyTable');
+const form: HTMLFormElement = document.forms[0];
+
 class User {
     constructor(
         public login: string,
@@ -7,14 +15,8 @@ class User {
     ) {};
 };
 
-let login: HTMLInputElement = document.querySelector('#login');
-let password: HTMLInputElement = document.querySelector('#password');
-let email: HTMLInputElement = document.querySelector('#email');
-let add: HTMLButtonElement = document.querySelector('#add');
-let save: HTMLButtonElement = document.querySelector('#save');
-const tbody: HTMLTableElement = document.querySelector('#bodyTable');
-const form: HTMLFormElement = document.forms[0];
 let users: User[] = [];
+let currentUser: User;
 
 function addUser(): void {
     let id = new Date().getTime();
@@ -27,6 +29,32 @@ function addUser(): void {
         alert('Заповніть всі поля');
     }
 };
+
+function saveUser(): void {
+    currentUser.email = email.value;
+    currentUser.password = password.value;
+    currentUser.login = login.value;
+    form.reset();
+    hideButtons();
+    render();
+    currentUser = null;
+}
+
+function edit(index: number): void {
+    currentUser = users[index];
+    login.value = currentUser.login;
+    email.value = currentUser.email;
+    password.value = currentUser.password;
+    hideButtons();
+}
+
+function remove(id: number): void {
+    users = users.filter(elem => elem.id != id);
+    render();
+}
+
+add.addEventListener('click', addUser);
+save.addEventListener('click', saveUser);
 
 function render(): void {
     tbody.innerHTML = users.reduce((html, elem, i) => {
@@ -43,36 +71,7 @@ function render(): void {
     }, '');
 }
 
-function hideButtons(selector){
-  [add,save].forEach(elem =>  elem.style.display = 'none');
-  selector.style.display = 'block';
+function hideButtons(): void {
+    add.style.display = currentUser ? 'hide' : 'block';
+    save.style.display = currentUser ? 'block' : 'hide';
 }
-
-function saveUser(): void {
-users[currentUser].email = email.value
-users[currentUser].password = password.value
-users[currentUser].login = login.value
-form.reset();
-hideButtons(add);
-render();
-}
-let currentUser: number;
-
-function edit(index): void {
-    currentUser = index;
-    console.log(currentUser);
-    
-    login.value = users[index].login
-    email.value = users[index].email
-    password.value = users[index].password
-    // add.style.display = 'none';
-    // save.style.display = 'block';
-    hideButtons(save);
-}
-
-function remove(id: number): void {
-    users = users.filter(elem => elem.id != id);
-    render();
-}
-add.addEventListener('click', addUser);
-save.addEventListener('click', saveUser);
