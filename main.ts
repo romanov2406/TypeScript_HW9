@@ -71,6 +71,7 @@ function render(): void {
     }, '');
 }
 
+
 function hideButtons(): void {
     add.style.display = currentUser ? 'hide' : 'block';
     save.style.display = currentUser ? 'block' : 'hide';

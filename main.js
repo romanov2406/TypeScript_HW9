@@ -1,3 +1,10 @@
+var login = document.querySelector('#login');
+var password = document.querySelector('#password');
+var email = document.querySelector('#email');
+var add = document.querySelector('#add');
+var save = document.querySelector('#save');
+var tbody = document.querySelector('#bodyTable');
+var form = document.forms[0];
 var User = /** @class */ (function () {
     function User(login, password, email, id) {
         this.login = login;
@@ -9,14 +16,8 @@ var User = /** @class */ (function () {
     return User;
 }());
 ;
-var login = document.querySelector('#login');
-var password = document.querySelector('#password');
-var email = document.querySelector('#email');
-var add = document.querySelector('#add');
-var save = document.querySelector('#save');
-var tbody = document.querySelector('#bodyTable');
-var form = document.forms[0];
 var users = [];
+var currentUser;
 function addUser() {
     var id = new Date().getTime();
     if (login.value && password.value && email.value) {
@@ -30,33 +31,21 @@ function addUser() {
     }
 }
 ;
-function render() {
-    tbody.innerHTML = users.reduce(function (html, elem, i) {
-        return html + ("\n         <tr>\n         <th scope=\"row\">" + (i + 1) + "</th>\n         <td>" + elem.login + "</td>\n         <td>" + elem.password + "</td>\n         <td>" + elem.email + "</td>\n         <td><button class=\"btn btn-warning\" onclick=\"edit(" + i + ")\">Edit</button></td>\n         <td><button class=\"btn btn-danger\" onclick=\"remove(" + elem.id + ")\">Remove</button></td>\n         </tr>\n         ");
-    }, '');
-}
-function hideButtons(selector) {
-    [add, save].forEach(function (elem) { return elem.style.display = 'none'; });
-    selector.style.display = 'block';
-}
 function saveUser() {
-    users[currentUser].email = email.value;
-    users[currentUser].password = password.value;
-    users[currentUser].login = login.value;
+    currentUser.email = email.value;
+    currentUser.password = password.value;
+    currentUser.login = login.value;
     form.reset();
-    hideButtons(add);
+    hideButtons();
     render();
+    currentUser = null;
 }
-var currentUser;
 function edit(index) {
-    currentUser = index;
-    console.log(currentUser);
-    login.value = users[index].login;
-    email.value = users[index].email;
-    password.value = users[index].password;
-    // add.style.display = 'none';
-    // save.style.display = 'block';
-    hideButtons(save);
+    currentUser = users[index];
+    login.value = currentUser.login;
+    email.value = currentUser.email;
+    password.value = currentUser.password;
+    hideButtons();
 }
 function remove(id) {
     users = users.filter(function (elem) { return elem.id != id; });
@@ -64,3 +53,12 @@ function remove(id) {
 }
 add.addEventListener('click', addUser);
 save.addEventListener('click', saveUser);
+function render() {
+    tbody.innerHTML = users.reduce(function (html, elem, i) {
+        return html + ("\n         <tr>\n         <th scope=\"row\">" + (i + 1) + "</th>\n         <td>" + elem.login + "</td>\n         <td>" + elem.password + "</td>\n         <td>" + elem.email + "</td>\n         <td><button class=\"btn btn-warning\" onclick=\"edit(" + i + ")\">Edit</button></td>\n         <td><button class=\"btn btn-danger\" onclick=\"remove(" + elem.id + ")\">Remove</button></td>\n         </tr>\n         ");
+    }, '');
+}
+function hideButtons() {
+    add.style.display = currentUser ? 'hide' : 'block';
+    save.style.display = currentUser ? 'block' : 'hide';
+}
