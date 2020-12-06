@@ -35,9 +35,9 @@ function saveUser(): void {
     currentUser.password = password.value;
     currentUser.login = login.value;
     form.reset();
-    hideButtons();
     render();
     currentUser = null;
+    hideButtons();
 }
 
 function edit(index: number): void {
@@ -49,7 +49,7 @@ function edit(index: number): void {
 }
 
 function remove(id: number): void {
-    users = users.filter(elem => elem.id != id);
+    users = users.filter((elem: User) => elem.id != id);
     render();
 }
 
@@ -57,7 +57,7 @@ add.addEventListener('click', addUser);
 save.addEventListener('click', saveUser);
 
 function render(): void {
-    tbody.innerHTML = users.reduce((html, elem, i) => {
+    tbody.innerHTML = users.reduce((html: string, elem: User, i: number) => {
         return html + `
          <tr>
          <th scope="row">${i + 1}</th>
@@ -73,6 +73,6 @@ function render(): void {
 
 
 function hideButtons(): void {
-    add.style.display = currentUser ? 'hide' : 'block';
-    save.style.display = currentUser ? 'block' : 'hide';
+    add.style.display = currentUser ? 'none' : 'block';
+    save.style.display = currentUser ? 'block' : 'none';
 }

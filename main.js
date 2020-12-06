@@ -36,9 +36,9 @@ function saveUser() {
     currentUser.password = password.value;
     currentUser.login = login.value;
     form.reset();
-    hideButtons();
     render();
     currentUser = null;
+    hideButtons();
 }
 function edit(index) {
     currentUser = users[index];
@@ -59,6 +59,6 @@ function render() {
     }, '');
 }
 function hideButtons() {
-    add.style.display = currentUser ? 'hide' : 'block';
-    save.style.display = currentUser ? 'block' : 'hide';
+    add.style.display = currentUser ? 'none' : 'block';
+    save.style.display = currentUser ? 'block' : 'none';
 }
